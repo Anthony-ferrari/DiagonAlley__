@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+        <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark my-2 my-md-0 mr-md-3">
+        <h5 class="logo my-0 mr-md-auto font-weight-normal">Diagon Alley Logo</h5>
+        <a class="py-1 d-none d-md-inline-block" href="customer">Customers</a>
+        <a class="py-1 d-none d-md-inline-block" href="communities">Community</a>
+		<a class="py-1 d-none d-md-inline-block" href="customerCommunities">Customers-Communities</a>
+        <a class="py-1 d-none d-md-inline-block" href="items">Items</a>
+        <a class="py-1 d-none d-md-inline-block" href="purchaseOrder">Purchase Order</a>
+        <a class="py-1 d-none d-md-inline-block" href="purchaseOrderDetails">Purchase Order Details</a>
+
+    </nav>
+    <h1 style="text-align: center">Diagon Alley</h1>
+    <p style="text-align: center">
+        Employees of Diagon Valley can use this page to search details information regarding customers, to update and add entries to customer table. 
+      </p>
+    <div class="justify-content-center mt-3">
+        <div class="container">
+            <h3>All data for this table:</h3>
+            <!-- <input type="submit" name="showAllCustomers" value="All Customers"/> -->
+            <table class="table">
+                <thead>
+                    <th>Customer ID</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Created Date</th>
+                </thead>
+                <tbody>
+                    {% for c in customers %}
+                    <tr>
+                        <td>{{c[0]}}</td>
+                        <td>{{c[1]}}</td>
+                        <td>{{c[2]}}</td>
+                        <td>{{c[3]}}</td>
+                        <td>{{c[4]}}</td>
+                        <td>{{c[5]}}</td>
+                        <td>{{c[6]}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+            <h3>Search for a Specific customer:</h3>
+            <form method="POST" id="filteredCustomerSearch">
+            <label>Customer Name:</label>
+            <input type="text" class = "searchByCustomerFirstName" id="searchByCustomerName" name = "searchByCustomerFirstName" placeholder="first name" required pattern="[a-zA-Z]+" minlength="1">
+            <input type="text" class = "searchByCustomerLastName" id="searchByCustomerName" name = "searchByCustomerLastName" placeholder="last name" required pattern="[a-zA-Z0-9]+" minlength="1">
+            <button class="submitButton" id="submitCustomerName" name = "searchByCustomerName">Submit</button>
+            </form>
+
+
+            <h3>Search Results Here:</h3>
+            <div id="resultsHere">
+            <p id="searchResults">A table will be dynamically populated here as the results from the searches above. (similar format with below tables)</p>
+            </div>
+            <table class="table">
+                <thead>
+                    <th>Customer ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Created Date</th>
+                </thead>
+                <tbody>
+                    {% for c in filteredCustomer %}
+                    <tr>
+                        <td>{{c[0]}}</td>
+                        <td>{{c[4]}}</td>
+                        <td>{{c[5]}}</td>
+                        <td>{{c[3]}}</td>
+						<td>{{c[1]}}</td>
+                        <td>{{c[2]}}</td>
+                        <td>{{c[6]}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <br>
+            <h3>Update User:</h3>
+            <div id="UpdateHere">
+            <p id="update">Update a customer entry by filling out the fields below:</p>
+            </div>
+            <table>
+                <thead>
+                    <th>Customer ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <form action="#" method="POST">
+                            <td>
+                                <select  name="customer_ID" id="customer_ID" >
+                                    {% for c in customerIDres %}
+                                    <option value= "{{c[0]}}">{{c[0]}}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td><input type="text" class="form-control" id="firstName" placeholder="first name" name="first_name" required minlength="1"></td>
+                            <td><input type="text" class="form-control" id="lastName" placeholder="last name" name="last_name" required minlength="1"></td>
+                            <td><input type="text" class="form-control" id="email" placeholder="email" name="email" required></td>
+                            <td><input type="text" class="form-control" id="username" placeholder="Username" name="username" required></td>
+                            <td><input type="text" class="form-control" id="password" placeholder="Password" name="password" required></td>
+                            <div class="container">
+                                <td><button type="submit" data-align="center" class="btn btn-info mb-2" name="updateCustomer">Update Entry</button></td>
+                            </div>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr>
+    <div class="justify-content-center mt-3">
+        <!-- add new customer -->
+        <fieldset>
+            <form method="POST" id="customer">
+                <div class="container"><h4><strong>Add a new customer</strong></h4></div>
+                <div class="container newCustomer">
+                    <div class="form-group">
+                        <label for="username" class="align-center">Username:</label>
+                        <input type="text" class="form-control" id="username" placeholder="Username" name="username" required>
+                        <label for="password" class="align-center">Password:</label>
+                        <input type="text" class="form-control" id="password" placeholder="Password" name="password" required>
+                        <label for="username" class="align-center">Email:</label>
+                        <input type="text" class="form-control" id="email" placeholder="email" name="email" required>
+                        <label for="username" class="align-center">First Name:</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="first name" name="first_name" required>
+                        <label for="username" class="align-center">Last Name: </label>
+                        <input type="text" class="form-control" id="lastName" placeholder="last name" name="last_name" required>
+                    </div>
+                    <div class="wishListSubmit">
+                        <button type="submit" data-align="center" class="btn btn-info mb-2" name="addCustomer">Add Entry</button>
+                    </div>
+                    <p>
+                        If you don't see the community you'd like to see, please add the community in the <a href="communities">Add Community</a> section.
+                    </p>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+
+</body></html>
